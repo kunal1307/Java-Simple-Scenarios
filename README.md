@@ -1,5 +1,13 @@
 # **Unravel Assignment**
 
+This Document contains information about the assignment task below are the point covers in each task :
+
+1. Goal
+2. Constructions
+3. Problem highlighted
+4. Changes made to provide solutions
+5. How to execute the code
+6. Optionally Scalability
 
 ### TASK 1 : Session Management API Fix
 
@@ -180,6 +188,16 @@ run below command in terminal after the code execution once you see a message "D
 _wait ~6 minutes so the 5 min TTL cleanup runs at least once_
 
     jcmd <pid> GC.heap_dump dumps/heap_after.hprof
+
+Below is the before and after picture of the heap dump:
+
+**BeforeHeapDump**
+
+![BeforeHeapSS.png](src/main/resources/BeforeHeapSS.png)
+
+**AfterHeapDump**
+
+![AfterHeapSS.png](src/main/resources/AfterHeapSS.png)
 
 **IntelliJ:** 
 
@@ -462,6 +480,7 @@ _Redirect detector output if you want:_
 **Manual thread dump:**
 
 `jcmd <pid> Thread.print or jstack <pid>` -- you should not see “Found one Java-level deadlock”.
+
 
 ### TASK 5 : Optimize Database Connection Pooling (HikariCP) Fix
 
