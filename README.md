@@ -1,6 +1,6 @@
 # **Simple Scenarios huge impact**
 
-This Document contains information about the assignment task below are the point covers in each task :
+This Document contains information about the task below are the point covers in each task :
 
 1. Goal
 2. Constructions
