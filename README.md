@@ -410,42 +410,42 @@ This prevents circular waits, which removes deadlocks by construction.
 * uses synchronized with a tiny helper to enforce order (great for teaching or very small cases).
 
 
-    public class DeadlockSimulator {
-        private final Object lock1 = new Object();
-        private final Object lock2 = new Object();
-        // deterministic order for the two locks
-        private Object[] ordered(Object a, Object b) {
-            return System.identityHashCode(a) < System.identityHashCode(b)
-                    ? new Object[]{a, b}
-                    : new Object[]{b, a};
-        }
-    
-        public void method1() {
-            var locks = ordered(lock1, lock2);
-            synchronized (locks[0]) {
-                synchronized (locks[1]) {
-                    System.out.println("Method1: Acquired lock1 and lock2");
+        public class DeadlockSimulator {
+            private final Object lock1 = new Object();
+            private final Object lock2 = new Object();
+            // deterministic order for the two locks
+            private Object[] ordered(Object a, Object b) {
+                return System.identityHashCode(a) < System.identityHashCode(b)
+                        ? new Object[]{a, b}
+                        : new Object[]{b, a};
+            }
+        
+            public void method1() {
+                var locks = ordered(lock1, lock2);
+                synchronized (locks[0]) {
+                    synchronized (locks[1]) {
+                        System.out.println("Method1: Acquired lock1 and lock2");
+                    }
+                }
+            }
+            public void method2() {
+                var locks = ordered(lock1, lock2);
+                synchronized (locks[0]) {
+                    synchronized (locks[1]) {
+                        System.out.println("Method2: Acquired lock2 and lock1");
+                    }
+                }
+            }
+            public static void main(String[] args) {
+                DeadlockSimulator simulator = new DeadlockSimulator();
+                for (int i = 0; i < 10000; i++) {
+                    Thread t1 = new Thread(simulator::method1, "Method1 - " + i);
+                    Thread t2 = new Thread(simulator::method2, "Method2 - " + i);
+                    t1.start();
+                    t2.start();
                 }
             }
         }
-        public void method2() {
-            var locks = ordered(lock1, lock2);
-            synchronized (locks[0]) {
-                synchronized (locks[1]) {
-                    System.out.println("Method2: Acquired lock2 and lock1");
-                }
-            }
-        }
-        public static void main(String[] args) {
-            DeadlockSimulator simulator = new DeadlockSimulator();
-            for (int i = 0; i < 10000; i++) {
-                Thread t1 = new Thread(simulator::method1, "Method1 - " + i);
-                Thread t2 = new Thread(simulator::method2, "Method2 - " + i);
-                t1.start();
-                t2.start();
-            }
-        }
-    }
 
 **Practical & flexible — uses ReentrantLock with:**
 
